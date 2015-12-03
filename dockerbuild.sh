@@ -3,6 +3,8 @@
 echo Cleaning...
 rm -rf ./dist
 
+export DISPLAY=:0
+
 echo Building app
 grunt
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
