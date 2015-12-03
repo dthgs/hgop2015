@@ -1,6 +1,7 @@
 ## Vagrant
 Hugbúnaður sem hjálpar til með virtual umhverfi (VirtualBox, VMware) fyrir þróara.
 
+
 ##VirtualBox
 VirtualBox er hugbúnaðurinn sem býr til sýndarvélar og keyrir þær.
 
@@ -15,3 +16,6 @@ JavaScript Open-source umhverfi fyrir þróun á server-side apps.
 
 ##Bower
 Pakka-installer fyrir JavaScript.
+
+##Topology of the deployment path so far
+123
