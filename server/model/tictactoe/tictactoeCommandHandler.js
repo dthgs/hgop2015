@@ -3,7 +3,12 @@
 var _ = require('lodash');
 
 module.exports = function tictactoeCommandHandler(events) {
-	
+
+	const gameState = {
+		gameCreatedEvent: events[0],
+		board:	[['','',''],['','',''],['','','']]
+	};
+
 	const handlers = {
 		'CreateGame': function(cmd) {
 			return [{
@@ -13,6 +18,16 @@ module.exports = function tictactoeCommandHandler(events) {
 				gameName: cmd.gameName,
 				timeStamp: cmd.timeStamp			
 			}]
+		},
+		'JoinGame': function(cmd) {
+			return [{
+				cmdID: cmd.cmdID,
+				event: 'GameJoined',
+				userName: cmd.userName,
+				otherUserName: gameState.gameCreatedEvent.userName,
+				gameName: cmd.gameName,
+				timeStamp: cmd.timeStamp
+			}];
 		}
 	};
 
