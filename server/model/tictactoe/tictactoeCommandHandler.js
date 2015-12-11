@@ -36,6 +36,18 @@ module.exports = function tictactoeCommandHandler(events) {
 				gameName: cmd.gameName,
 				timeStamp: cmd.timeStamp
 			}];
+		},
+		'MakeMove': function(cmd) {
+			return[{
+				cmdID: cmd.cmdID,
+				event: 'MoveMade',
+				userName: cmd.userName,
+				gameName: gameState.gameCreatedEvent.gameName,
+				x: cmd.x,
+				y: cmd.y,
+				side: cmd.side,
+				timeStamp: cmd.timeStamp
+			}];
 		}
 	};
 
