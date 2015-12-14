@@ -4,10 +4,23 @@ var _ = require('lodash');
 
 module.exports = function tictactoeCommandHandler(events) {
 
-	const gameState = {
+	var gameState = {
 		gameCreatedEvent: events[0],
-		board:	[['','',''],['','',''],['','','']]
+		board: [['','',''],['','',''],['','','']]
 	};
+
+	var eventHandlers = {
+		'MoveMade': (event) => {
+			gameState.board[event.x][event.y] = event.side;
+		}
+    	};
+
+	_.each(events, (event) => {
+		const eventHandler = eventHandlers[event.event];
+		if (eventHandler) {
+			eventHandler(event)
+		}
+	});
 
 	const handlers = {
 		'CreateGame': function(cmd) {
@@ -38,9 +51,17 @@ module.exports = function tictactoeCommandHandler(events) {
 			}];
 		},
 		'MakeMove': function(cmd) {
+			var move = 'MoveMade';
+
+			if(gameState.board[cmd.x][cmd.y] !== ''){
+				move = 'IllegalMove';
+			}
+
+			//gameState.board[cmd.x][cmd.y] = cmd.side;
+
 			return[{
 				cmdID: cmd.cmdID,
-				event: 'MoveMade',
+				event: move,
 				userName: cmd.userName,
 				gameName: gameState.gameCreatedEvent.gameName,
 				x: cmd.x,
@@ -53,7 +74,11 @@ module.exports = function tictactoeCommandHandler(events) {
 
 	return {
 		executeCommand: function(cmd) {
-			return handlers[cmd.command](cmd);
+			const handler = handlers[cmd.command];
+			if(handler){
+				return handler(cmd);
+			}
+			return 'Fail command';
 		}
 	};
 
