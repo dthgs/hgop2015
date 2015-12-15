@@ -9,7 +9,7 @@ module.exports = function(eventStore, commandHandler){
         var events;		
 		
         try{		
-          events = commandHandler(eventStream).executeCommand(cmd);		
+          events = commandHandler(eventStream).executeCommand(cmd);
         } catch(e){		
           defer.reject(e);		
         }		

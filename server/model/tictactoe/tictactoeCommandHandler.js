@@ -4,16 +4,34 @@ var _ = require('lodash');
 
 module.exports = function tictactoeCommandHandler(events) {
 
-	const gameState = {
+//console.log('Console please ', events);
+
+	var gameState = {
 		gameCreatedEvent: events[0],
-		board:	[['','',''],['','',''],['','','']]
+		board: [['','',''],['','',''],['','','']]
 	};
+
+	var eventHandlers = {
+		'MoveMade': (event) => {
+			gameState.board[event.x][event.y] = event.side;
+		}
+    	};
+
+	_.each(events, (event) => {
+		const eventHandler = eventHandlers[event.event];
+		if (eventHandler) {
+			eventHandler(event)
+		} else {
+		      //console.error("No handler for event", event);
+		}
+	});
 
 	const handlers = {
 		'CreateGame': function(cmd) {
 			return [{
 				cmdID: cmd.cmdID,
 				event: 'GameCreated',
+				gameId: cmd.gameId,
 				userName: cmd.userName,
 				gameName: cmd.gameName,
 				timeStamp: cmd.timeStamp			
@@ -24,6 +42,7 @@ module.exports = function tictactoeCommandHandler(events) {
 				return [{
 					cmdID: cmd.cmdID,
 					event: 'GameDoesNotExist',
+					gameId: cmd.gameId,
 					userName: cmd.userName,
 					timeStamp: cmd.timeStamp
 				}];
@@ -31,6 +50,7 @@ module.exports = function tictactoeCommandHandler(events) {
 			return [{
 				cmdID: cmd.cmdID,
 				event: 'GameJoined',
+				gameId: cmd.gameId,
 				userName: cmd.userName,
 				otherUserName: gameState.gameCreatedEvent.userName,
 				gameName: cmd.gameName,
@@ -38,9 +58,16 @@ module.exports = function tictactoeCommandHandler(events) {
 			}];
 		},
 		'MakeMove': function(cmd) {
+			var move = 'MoveMade';
+
+			if(gameState.board[cmd.x][cmd.y] !== ''){
+				move = 'IllegalMove';
+			}
+
 			return[{
 				cmdID: cmd.cmdID,
-				event: 'MoveMade',
+				event: move,
+				gameId: cmd.gameId,
 				userName: cmd.userName,
 				gameName: gameState.gameCreatedEvent.gameName,
 				x: cmd.x,
@@ -53,7 +80,11 @@ module.exports = function tictactoeCommandHandler(events) {
 
 	return {
 		executeCommand: function(cmd) {
-			return handlers[cmd.command](cmd);
+			const handler = handlers[cmd.command];
+			if(handler){
+				return handler(cmd);
+			}
+			return 'Fail command';
 		}
 	};
 
