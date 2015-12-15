@@ -60,10 +60,7 @@ describe('make move cmd', () => {
 			given.push({
 				cmdID: '1010',
 				event: 'MoveMade',
-<<<<<<< HEAD
 				gameId: 123,
-=======
->>>>>>> b73ecb2de6a2a7ecbaf57f3b7fdee7057f669b66
 				userName: 'Daniel',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -74,10 +71,7 @@ describe('make move cmd', () => {
 			when = {
 				cmdID: '1010',
 				command: 'MakeMove',
-<<<<<<< HEAD
 				gameId: 123,
-=======
->>>>>>> b73ecb2de6a2a7ecbaf57f3b7fdee7057f669b66
 				userName: 'Jon',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -88,10 +82,7 @@ describe('make move cmd', () => {
 			then = [{
 				cmdID: '1010',
 				event: 'IllegalMove',
-<<<<<<< HEAD
 				gameId: 123,
-=======
->>>>>>> b73ecb2de6a2a7ecbaf57f3b7fdee7057f669b66
 				userName: 'Jon',
 				gameName: 'Test Game 123',
 				x: 0,
