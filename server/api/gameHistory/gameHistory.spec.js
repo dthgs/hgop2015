@@ -11,7 +11,7 @@ describe('GET /api/gameHistory', function () {
       cmdID : "1234",
       gameId : "999",
       command: "CreateGame",
-      userName: "Gulli",
+      userName: "Dannithor",
       gameName: "TheFirstGame",
       timeStamp: "2014-12-02T11:29:29"
     };
@@ -35,7 +35,7 @@ describe('GET /api/gameHistory', function () {
                 "cmdID": "1234",
                 "gameId": "999",
                 "event": "GameCreated",
-                "userName": "Gulli",
+                "userName": "Dannithor",
                 "gameName": "TheFirstGame",
                 "timeStamp": "2014-12-02T11:29:29"
               }]);
