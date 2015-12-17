@@ -34,6 +34,15 @@ module.exports = function tictactoeCommandHandler(events) {
 			gameState.board[2][cmd.y] === cmd.side;
 	};
 
+	const diagonalWin = (cmd) => {
+		return (gameState.board[0][0] === cmd.side &&
+			gameState.board[1][1] === cmd.side &&
+			gameState.board[2][2] === cmd.side) ||
+			(gameState.board[0][2] === cmd.side &&
+			gameState.board[1][1] === cmd.side &&
+			gameState.board[2][0] === cmd.side);
+	};
+
 	const handlers = {
 		'CreateGame': function(cmd) {
 			return [{
@@ -86,7 +95,7 @@ module.exports = function tictactoeCommandHandler(events) {
 
 			gameState.board[cmd.x][cmd.y] = cmd.side;
 
-			if(verticalWin(cmd) || horizontalWin(cmd)){
+			if(verticalWin(cmd) || horizontalWin(cmd) || diagonalWin(cmd)){
 				ret.push({
 				cmdID: '1111',
 				event: 'GameWon',
