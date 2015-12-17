@@ -333,4 +333,124 @@ describe('make move cmd', () => {
 		});
 	});
 
+
+	describe('draw test 1', () => {
+		it ('nobody wins the game', () => {
+			given.push({
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 0,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:10:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Jon',
+				gameName: 'Test Game 123',
+				x: 1,
+				y: 0,
+				side: 'O',
+				timeStamp: '2015.12.10.T09:11:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 2,
+				y: 0,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:12:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Jon',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 1,
+				side: 'O',
+				timeStamp: '2015.12.10.T09:13:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 1,
+				y: 1,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:14:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Jon',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 2,
+				side: 'O',
+				timeStamp: '2015.12.10.T09:15:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 2,
+				y: 1,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:16:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Jon',
+				gameName: 'Test Game 123',
+				x: 2,
+				y: 2,
+				side: 'O',
+				timeStamp: '2015.12.10.T09:17:10'
+			});
+			when = {
+				cmdID: '1010',
+				command: 'MakeMove',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 1,
+				y: 2,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:18:10'
+			};
+			then = [{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 1,
+				y: 2,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:18:10'
+			},{
+				cmdID: '2222',
+				event: 'GameDrawn',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				timeStamp: '2015.12.10.T09:18:10'
+			}];
+
+			const actualEvents = tictactoeCommandHandler(given).executeCommand(when);
+			JSON.stringify(actualEvents).should.be.exactly(JSON.stringify(then));
+		});
+	});
+
+
 });

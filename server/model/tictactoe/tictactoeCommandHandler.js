@@ -43,6 +43,17 @@ module.exports = function tictactoeCommandHandler(events) {
 			gameState.board[2][0] === cmd.side);
 	};
 
+	const drawCheck = (cmd) => {
+		for(var i = 0; i < gameState.board.length; i++){
+			for(var j = 0; j < gameState.board[i].length; j++){
+				if(gameState.board[i][j] === ''){
+					return false;
+				}
+			}
+		}
+		return true;
+	};
+
 	const handlers = {
 		'CreateGame': function(cmd) {
 			return [{
@@ -105,6 +116,17 @@ module.exports = function tictactoeCommandHandler(events) {
 				side: cmd.side,
 				timeStamp: cmd.timeStamp
 				});		
+			}
+
+			if(drawCheck()){
+				ret.push({
+				cmdID: '2222',
+				event: 'GameDrawn',
+				gameId: cmd.gameId,
+				userName: cmd.userName,
+				gameName: gameState.gameCreatedEvent.gameName,
+				timeStamp: cmd.timeStamp
+				});	
 			}
 
 			return ret;
