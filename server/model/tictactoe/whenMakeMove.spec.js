@@ -76,6 +76,7 @@ describe('make move cmd', () => {
 			then = [{
 				cmdID: '1010',
 				event: 'IllegalMove',
+
 				userName: 'Jon',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -84,6 +85,78 @@ describe('make move cmd', () => {
 				timeStamp: '2015.12.10.T09:06:20'
 			}];
 		
+			const actualEvents = tictactoeCommandHandler(given).executeCommand(when);
+			JSON.stringify(actualEvents).should.be.exactly(JSON.stringify(then));
+		});
+	});
+
+	describe('win vertical winning test', () => {
+		it ('X wins with moves 0,0 1,0 and 2,0', () => {
+			given.push({
+				cmdID: '1010',
+				event: 'MoveMade',
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 0,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:10:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				userName: 'Jon',
+				gameName: 'Test Game 123',
+				x: 1,
+				y: 0,
+				side: 'O',
+				timeStamp: '2015.12.10.T09:11:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 1,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:12:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				userName: 'Jon',
+				gameName: 'Test Game 123',
+				x: 1,
+				y: 1,
+				side: 'O',
+				timeStamp: '2015.12.10.T09:13:10'
+			});
+			when = {
+				cmdID: '1010',
+				command: 'MakeMove',
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 2,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:14:10'
+			};
+			then = [{
+				cmdID: '1010',
+				event: 'MoveMade',
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 2,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:14:10'
+			},{
+				cmdID:      '1111',
+				event:     'GameWon',
+				userName:  'Daniel',
+				gameName: 'Test Game 123',
+				side:      'X',
+				timeStamp: '2015.12.10.T09:14:10'
+			}];
+
 			const actualEvents = tictactoeCommandHandler(given).executeCommand(when);
 			JSON.stringify(actualEvents).should.be.exactly(JSON.stringify(then));
 		});
