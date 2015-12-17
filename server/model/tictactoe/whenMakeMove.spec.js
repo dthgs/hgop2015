@@ -91,7 +91,7 @@ describe('make move cmd', () => {
 	});
 
 	describe('win vertical winning test', () => {
-		it ('X wins with moves 0,0 1,0 and 2,0', () => {
+		it ('X wins with moves 0,0 0,1 and 0,2', () => {
 			given.push({
 				cmdID: '1010',
 				event: 'MoveMade',
