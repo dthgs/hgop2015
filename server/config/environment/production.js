@@ -20,5 +20,5 @@ module.exports = {
             process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
             'mongodb://localhost/tictactoe'
   },
-  eventstore:'/eventstore/memorystore/memorystore',
+  eventstore:'/eventstore/memorystore/memorystore'
 };

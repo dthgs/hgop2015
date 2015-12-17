@@ -7,5 +7,5 @@ module.exports = {
   mongo: {
     uri: 'mongodb://localhost/tictactoe-test'
   },
-  eventstore:'/eventstore/memorystore/memorystore',
+  eventstore:'/eventstore/memorystore/memorystore'
 };
