@@ -9,15 +9,6 @@ module.exports = function tictactoeCommandHandler(events) {
 		board: [['','',''],['','',''],['','','']]
 	};
 
-	const verticalWin = (cmd) => {
-		//console.log(cmd);
-		//console.log(events);
-		
-		return gameState.board[cmd.x][0] === cmd.side &&
-			gameState.board[cmd.x][1] === cmd.side &&
-			gameState.board[cmd.x][2] === cmd.side;
-	};
-
 	var eventHandlers = {
 		'MoveMade': (event) => {
 			gameState.board[event.x][event.y] = event.side;
@@ -31,11 +22,24 @@ module.exports = function tictactoeCommandHandler(events) {
 		}
 	});
 
+	const verticalWin = (cmd) => {
+		return gameState.board[cmd.x][0] === cmd.side &&
+			gameState.board[cmd.x][1] === cmd.side &&
+			gameState.board[cmd.x][2] === cmd.side;
+	};
+
+	const horizontalWin = (cmd) => {
+		return gameState.board[0][cmd.y] === cmd.side &&
+			gameState.board[1][cmd.y] === cmd.side &&
+			gameState.board[2][cmd.y] === cmd.side;
+	};
+
 	const handlers = {
 		'CreateGame': function(cmd) {
 			return [{
 				cmdID: cmd.cmdID,
 				event: 'GameCreated',
+				gameId: cmd.gameId,
 				userName: cmd.userName,
 				gameName: cmd.gameName,
 				timeStamp: cmd.timeStamp			
@@ -46,6 +50,7 @@ module.exports = function tictactoeCommandHandler(events) {
 				return [{
 					cmdID: cmd.cmdID,
 					event: 'GameDoesNotExist',
+					gameId: cmd.gameId,
 					userName: cmd.userName,
 					timeStamp: cmd.timeStamp
 				}];
@@ -53,6 +58,7 @@ module.exports = function tictactoeCommandHandler(events) {
 			return [{
 				cmdID: cmd.cmdID,
 				event: 'GameJoined',
+				gameId: cmd.gameId,
 				userName: cmd.userName,
 				otherUserName: gameState.gameCreatedEvent.userName,
 				gameName: cmd.gameName,
@@ -69,6 +75,7 @@ module.exports = function tictactoeCommandHandler(events) {
 			const ret = [{
 				cmdID: cmd.cmdID,
 				event: move,
+				gameId: cmd.gameId,
 				userName: cmd.userName,
 				gameName: gameState.gameCreatedEvent.gameName,
 				x: cmd.x,
@@ -79,10 +86,11 @@ module.exports = function tictactoeCommandHandler(events) {
 
 			gameState.board[cmd.x][cmd.y] = cmd.side;
 
-			if(verticalWin(cmd)){
+			if(verticalWin(cmd) || horizontalWin(cmd)){
 				ret.push({
 				cmdID: '1111',
 				event: 'GameWon',
+				gameId: cmd.gameId,
 				userName: cmd.userName,
 				gameName: gameState.gameCreatedEvent.gameName,
 				side: cmd.side,

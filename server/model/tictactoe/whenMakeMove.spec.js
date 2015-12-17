@@ -10,12 +10,14 @@ describe('make move cmd', () => {
 		given = [{
 			cmdID: '1234',
 			event: 'GameCreated',
+			gameId: 123,
 			userName: 'Daniel',
 			gameName: 'Test Game 123',
 			timeStamp: '2015.13.10.T08:12:30'
 		},{
 			cmdID: '4567',
 			event: 'GameJoined',
+			gameId: 123,
 			userName: 'Jon',
 			otherUserName: 'Daniel',
 			gameName: 'Test Game 123',
@@ -28,6 +30,7 @@ describe('make move cmd', () => {
 			when = {
 				cmdID: '1010',
 				command: 'MakeMove',
+				gameId: 123,
 				userName: 'Daniel',
 				gameName: 'Test Game 123',
 				x: 1,
@@ -38,6 +41,7 @@ describe('make move cmd', () => {
 			then = [{
 				cmdID: '1010',
 				event: 'MoveMade',
+				gameId: 123,
 				userName: 'Daniel',
 				gameName: 'Test Game 123',
 				x: 1,
@@ -56,6 +60,7 @@ describe('make move cmd', () => {
 			given.push({
 				cmdID: '1010',
 				event: 'MoveMade',
+				gameId: 123,
 				userName: 'Daniel',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -66,6 +71,7 @@ describe('make move cmd', () => {
 			when = {
 				cmdID: '1010',
 				command: 'MakeMove',
+				gameId: 123,
 				userName: 'Jon',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -76,7 +82,7 @@ describe('make move cmd', () => {
 			then = [{
 				cmdID: '1010',
 				event: 'IllegalMove',
-
+				gameId: 123,
 				userName: 'Jon',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -90,11 +96,12 @@ describe('make move cmd', () => {
 		});
 	});
 
-	describe('win vertical winning test', () => {
+	describe('win vertical test', () => {
 		it ('X wins with moves 0,0 0,1 and 0,2', () => {
 			given.push({
 				cmdID: '1010',
 				event: 'MoveMade',
+				gameId: 123,
 				userName: 'Daniel',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -104,6 +111,7 @@ describe('make move cmd', () => {
 			},{
 				cmdID: '1010',
 				event: 'MoveMade',
+				gameId: 123,
 				userName: 'Jon',
 				gameName: 'Test Game 123',
 				x: 1,
@@ -113,6 +121,7 @@ describe('make move cmd', () => {
 			},{
 				cmdID: '1010',
 				event: 'MoveMade',
+				gameId: 123,
 				userName: 'Daniel',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -122,6 +131,7 @@ describe('make move cmd', () => {
 			},{
 				cmdID: '1010',
 				event: 'MoveMade',
+				gameId: 123,
 				userName: 'Jon',
 				gameName: 'Test Game 123',
 				x: 1,
@@ -132,6 +142,7 @@ describe('make move cmd', () => {
 			when = {
 				cmdID: '1010',
 				command: 'MakeMove',
+				gameId: 123,
 				userName: 'Daniel',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -142,6 +153,7 @@ describe('make move cmd', () => {
 			then = [{
 				cmdID: '1010',
 				event: 'MoveMade',
+				gameId: 123,
 				userName: 'Daniel',
 				gameName: 'Test Game 123',
 				x: 0,
@@ -151,6 +163,86 @@ describe('make move cmd', () => {
 			},{
 				cmdID:      '1111',
 				event:     'GameWon',
+				gameId: 123,
+				userName:  'Daniel',
+				gameName: 'Test Game 123',
+				side:      'X',
+				timeStamp: '2015.12.10.T09:14:10'
+			}];
+
+			const actualEvents = tictactoeCommandHandler(given).executeCommand(when);
+			JSON.stringify(actualEvents).should.be.exactly(JSON.stringify(then));
+		});
+	});
+
+	describe('win horizontal test', () => {
+		it ('X wins with moves 0,0 1,0 and 2,0', () => {
+			given.push({
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 0,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:10:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Jon',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 1,
+				side: 'O',
+				timeStamp: '2015.12.10.T09:11:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 1,
+				y: 0,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:12:10'
+			},{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Jon',
+				gameName: 'Test Game 123',
+				x: 0,
+				y: 2,
+				side: 'O',
+				timeStamp: '2015.12.10.T09:13:10'
+			});
+			when = {
+				cmdID: '1010',
+				command: 'MakeMove',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 2,
+				y: 0,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:14:10'
+			};
+			then = [{
+				cmdID: '1010',
+				event: 'MoveMade',
+				gameId: 123,
+				userName: 'Daniel',
+				gameName: 'Test Game 123',
+				x: 2,
+				y: 0,
+				side: 'X',
+				timeStamp: '2015.12.10.T09:14:10'
+			},{
+				cmdID:      '1111',
+				event:     'GameWon',
+				gameId: 123,
 				userName:  'Daniel',
 				gameName: 'Test Game 123',
 				side:      'X',
