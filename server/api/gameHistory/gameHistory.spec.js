@@ -1,4 +1,4 @@
-/*'use strict';
+'use strict';
 
 var should = require('should');
 var app = require('../../app');
@@ -8,11 +8,11 @@ describe('GET /api/gameHistory', function () {
 
   it('should respond with JSON array with created events for game', function (done) {
     var command =     {
-      id : "1234",
+      cmdID : "1234",
       gameId : "999",
-      comm: "CreateGame",
-      userName: "Gulli",
-      name: "TheFirstGame",
+      command: "CreateGame",
+      userName: "Dannithor",
+      gameName: "TheFirstGame",
       timeStamp: "2014-12-02T11:29:29"
     };
 
@@ -32,15 +32,15 @@ describe('GET /api/gameHistory', function () {
             res.body.should.be.instanceof(Array);
             should(res.body).eql(
               [{
-                "id": "1234",
+                "cmdID": "1234",
                 "gameId": "999",
                 "event": "GameCreated",
-                "userName": "Gulli",
-                "name": "TheFirstGame",
+                "userName": "Dannithor",
+                "gameName": "TheFirstGame",
                 "timeStamp": "2014-12-02T11:29:29"
               }]);
             done();
           });
       });
   });
-});*/
+});

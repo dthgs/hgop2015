@@ -9,6 +9,7 @@ describe('create game cmd', () => {
 		const when = {
 			cmdID: '1234',
 			command: 'CreateGame',
+			gameId: 1,
 			userName: 'Daniel',
 			gameName: 'Test Game 1',
 			timeStamp: '2015.12.10.T10:56:30'
@@ -16,6 +17,7 @@ describe('create game cmd', () => {
 		const then = [{
 			cmdID: '1234',
 			event: 'GameCreated',
+			gameId: 1,
 			userName: 'Daniel',
 			gameName: 'Test Game 1',
 			timeStamp: '2015.12.10.T10:56:30'
@@ -30,6 +32,7 @@ describe('create game cmd', () => {
 		const when = {
 			cmdID: '2345',
 			command: 'CreateGame',
+			gameId: 2,
 			userName: 'Thor',
 			gameName: 'Test Game 2',
 			timeStamp: '2015.12.10.T13:09:30'
@@ -37,6 +40,7 @@ describe('create game cmd', () => {
 		const then = [{
 			cmdID: '2345',
 			event: 'GameCreated',
+			gameId: 2,
 			userName: 'Thor',
 			gameName: 'Test Game 2',
 			timeStamp: '2015.12.10.T13:09:30'
