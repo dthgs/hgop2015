@@ -39,3 +39,10 @@ Eftir að hafa prófað mig aðeins áfram ákvað ég að sjá hvað það mynd
 ##Does the load test run in serial or in parallel?
 NodeJS keyrir sem Asyncrhonous I/O eða non-blocking I/O sem þýðir að næsti read/write process (næsti leikur/test) fer af stað um leið og einn er byrjaður þannig að þeir keyra margir á sama tíma.
 
+#Traceability and deploy any version (Dagur 10)
+###What does this give us? Who would use the capability to track versions and why? Who would use capability to deploy any version and why?
+Það er hægt að gefa út og gera allar prófanir (acceptance, capacity tests..) á eldri útgáfum hugbúnaðarins með þessum viðbótum. Test-arar geta þá til dæmis farið og borið saman eldri útgáfur og fundið villur sem ekki höfðu komið upp áður. Kemur sér líka vel ef núverandi útgáfa reynist gölluð þá er hægt að skipta yfir í eldri útgáfu sem virkaði.
+###What was wrong with having docker push in the deployment script rather than in the dockerbuild.sh script?
+Þá getur deployment scriptið sótt aðrar eldri binary skrár og sett upp á test servernum hjá sér þar sem þær eru nú buildaðar í skrefinu á undan en ekki á sama tíma og test serverinn pullar.
+###How does the "deploy any version, anywhere" build feature work? Hint: Track GIT_COMMIT
+Þegar það er pushað þá er ákveðið hash geymt með þessu tiltekna committ-i sem fer svo áfram með docker image-inu inn á dockerhub og build pípan getur svo sótt og sett upp ákveðnar (eldri) útgáfur þannig.
