@@ -19,4 +19,7 @@ echo Building docker image
 docker build -t dthor/tictactoe .
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 
+echo Pushing docker image
+docker push dthor/tictactoe
+
 echo "Done"

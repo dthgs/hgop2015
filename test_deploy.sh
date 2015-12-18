@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo ----- PUSHING DOCKER IMAGE -----
-docker push dthor/tictactoe
-
 echo ----- DEPLOYING TO TEST SERVER -----
 ssh root@159.203.75.194 "\
   docker pull dthor/tictactoe; \
