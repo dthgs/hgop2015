@@ -1,77 +1,100 @@
+'use strict';
+
 var should = require('should');
+var _ = require('lodash');
 var request = require('supertest');
 var acceptanceUrl = process.env.ACCEPTANCE_URL;
 
-function given(userApi) {
-
-	var _expectedEvents=[{
-		"id": "1234",
-		"gameId": userApi._command.gameId,
-		"event": "EventName",
-		"userName": userApi._command.userName,
-		"name": userApi._command.gameId,
-		"timeStamp": "2014-12-02T11:29:29"
-	}];
-
-	var _currentEvent = 0;
-
-	var expectApi = {
-		withName: function (gameName) {
-			_expectedEvents[_currentEvent].name = gameName;
-			return expectApi;
-	},
-	expect: function (eventName) {
-		_expectedEvents[_currentEvent].event = eventName;
-		return expectApi;
-	},
-	isOk: function (done) {
-		var req = request(acceptanceUrl);
-		req
-		.post('/api/createGame')
-		.type('json')
-		.send(userApi._command)
-		.end(function (err, res) {
-  			if (err) return done(err);
-          	request(acceptanceUrl)
-            	.get('/api/gameHistory/' + userApi._command.gameId)
-		.expect(200)
-		.expect('Content-Type', /json/)
-		.end(function (err, res) {
-		if (err) return done(err);
-		res.body.should.be.instanceof(Array);
-		should(res.body).eql(
-                	_expectedEvents);
-		done();
-            });
-        });
-
-      return expectApi;
+function given(user){
+  const expectations = {
+    "gameId": user.cmd.gameId,
+    "userName": user.cmd.userName,
+    "event": undefined,
+  };
+  const userCmd = [user];
+  const givenApi = {
+    byUser: function (userName) {
+      expectations.userName = userName;
+      return givenApi;
     },
+    expect: function(eventName){
+      expectations.event = eventName;
+      return givenApi;
+    },
+    and: function(user2) {
+      if (user2.cmd.userName === user.cmd.userName) {
+        user2.cmd.side = 'X';
+      } else {
+        user2.cmd.side = 'O';
+      }
+      user2.cmd.name = user.cmd.name;
+      user2.cmd.gameId = user.cmd.gameId;
+      user2.cmd.otherUserName = user.cmd.userName;
+      userCmd.push(user2);
+      return givenApi;
+    },
+    isOk: function(done) {
+      post(userCmd, 0, done);
+    }
   };
 
-  return expectApi;
+  return givenApi;
+  function post(cmds, i, done) {
+    if (i < cmds.length) {
+      request(acceptanceUrl).post(cmds[i].cmd.route).type('json').send(cmds[i].cmd)
+        .end(function (err, res) {
+          if (err) return done(err);
+          res.statusCode.should.be.eql(200);
+          post(cmds, ++i, done);
+        });
+    }
+    else {
+      request(acceptanceUrl).get('/api/gameHistory/' + user.cmd.gameId).expect(200).expect('Content-Type', /json/).end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.be.instanceof(Array);
+        should(res.body[res.body.length-1].gameId).eql(expectations.gameId);
+        should(res.body[res.body.length-1].userName).eql(expectations.userName);
+        should(res.body[res.body.length-1].event).eql(expectations.event);
+        done();
+      });
+    }
+  }
 }
 
 function user(userName) {
-	var userApi = {
-	_command: undefined,
-	createsGame: function (gameId) {
-		userApi._command = {
-		id: "1234",
-		gameId: gameId,
-		comm: "CreateGame",
-		userName: userName,
-		name: gameId,
-		timeStamp: "2014-12-02T11:29:29"
-	};
-	return userApi;
-	},
-		withId : function(gameId){
-			userApi._command.gameId = gameId;
-			return userApi;
-		}
-	};
-	return userApi
+  const userApi = {
+    cmd: {
+      userName: userName,
+      name: undefined
+    },
+    createsGame: function (gameId) {
+      userApi.cmd.gameId = gameId;
+      userApi.cmd.command = "CreateGame";
+      userApi.cmd.route = '/api/createGame';
+      userApi.cmd.side = 'X';
+      return userApi;
+    },
+    named: function (gameName) {
+      userApi.cmd.name = gameName;
+      return userApi;
+    },
+    joinsGame: function(gameId) {
+      userApi.cmd.gameId = gameId;
+      userApi.cmd.command = "JoinGame";
+      userApi.cmd.route = '/api/joinGame';
+      userApi.cmd.side = 'O';
+      return userApi;
+    },
+    makeMove: function(x, y) {
+      userApi.cmd.x = x;
+      userApi.cmd.y = y;
+      userApi.cmd.command = "MakeMove";
+      userApi.cmd.route = '/api/makeMove';
+      return userApi;
+    }
+  };
+
+  return userApi;
 }
 
 module.exports.user = user;

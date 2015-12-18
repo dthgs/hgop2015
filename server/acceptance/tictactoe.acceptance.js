@@ -54,8 +54,22 @@ describe('TEST ENV GET /api/gameHistory', function () {
 
    it('Should execute fluid API test', function (done) {
      given(user("Dannithor").createsGame("Fluid API test game"))
-     .expect("GameCreated").withName("Fluid API test game").isOk(done);
-	done();
+     .expect("GameCreated").isOk(done);
+   });
+
+   it('Should play a game until draw', function (done) {
+    given(user("X").createsGame("123").named("Fluid API draw"))
+      .and(user("O").joinsGame("123"))
+      .and(user("X").makeMove(0,0))
+      .and(user("O").makeMove(1,0))
+      .and(user("X").makeMove(2,0))
+      .and(user("O").makeMove(0,1))
+      .and(user("X").makeMove(1,1))
+      .and(user("O").makeMove(0,2))
+      .and(user("X").makeMove(2,1))
+      .and(user("O").makeMove(2,2))
+      .and(user("X").makeMove(1,2))
+      .expect("GameDrawn").byUser("X").isOk(done);
    });
 
 });
