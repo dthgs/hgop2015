@@ -27,9 +27,13 @@ Jenkins CI hefur svo verið sett upp á dev vélinni. Í hvert skipti þegar bre
 #Load/capacity tests (Dagur 9)
 ##Results
 Eftir að hafa prófað mig aðeins áfram ákvað ég að sjá hvað það myndu sirka nást margir leikir á 5sec svo þeir yrðu ekki of margir. Á rétt yfir 3000ms náðust 10000 leikir að spilast svo ég hækkaði 5sec mörkin um 20% í 6sec sem er þá load tolerance-ið.
+
 *Should play 10000 games in 6 seconds. (3320ms)*
+
 *Should play 10000 games in 6 seconds. (3231ms)*
+
 *Should play 10000 games in 6 seconds. (3119ms)*
+
 *Should play 10000 games in 6 seconds. (3026ms)*
 
 ##Does the load test run in serial or in parallel?
